@@ -25,7 +25,11 @@ and reconciliation macros can consume directly.
 - [Quick Start](#quick-start)
 - [Sheets](#sheets)
 - [Examples](#examples)
+- [The camt053 suite](#the-camt053-suite)
+- [When not to use camt053-writer-xlsx](#when-not-to-use-camt053-writer-xlsx)
 - [Development](#development)
+- [Security](#security)
+- [Documentation](#documentation)
 - [License](#license)
 - [Contributing](#contributing)
 - [Acknowledgements](#acknowledgements)
@@ -96,6 +100,41 @@ Two runnable examples live in `examples/`:
 
 Both are exercised in CI on every commit.
 
+## The camt053 suite
+
+`camt053-writer-xlsx` is part of a set of independently installable
+packages built around the [`camt053`][core] library — pick whichever
+ones your stack needs:
+
+| Package | Role |
+| :--- | :--- |
+| [`camt053`](https://pypi.org/project/camt053/) | Core library + CLI + FastAPI REST API |
+| [`camt053-mcp`](https://pypi.org/project/camt053-mcp/) | Model Context Protocol server (for AI agents) |
+| [`camt053-lsp`](https://pypi.org/project/camt053-lsp/) | Language Server Protocol server (for editors) |
+| [`camt053-writer-xlsx`](https://pypi.org/project/camt053-writer-xlsx/) | **Excel `.xlsx` writer (this package)** |
+| [`camt053-loader-mt940`](https://pypi.org/project/camt053-loader-mt940/) | SWIFT MT940 → camt.053 loader |
+
+```mermaid
+flowchart LR
+    A["camt.053 XML"] -->|parse_document| B["camt053"]
+    B -->|ParsedDocument| C["camt053-writer-xlsx"]
+    C -->|.xlsx workbook| D["Accountants / auditors"]
+```
+
+## When not to use camt053-writer-xlsx
+
+- **You need a custom sheet layout.** The four-sheet structure
+  (Metadata / Balances / Entries / Reversals) is stable by design
+  so downstream tooling can target columns by name. Forking the
+  writer is the right move if your downstream needs differ.
+- **You need `.xls` (legacy binary).** `openpyxl` writes `.xlsx`
+  only; convert downstream if you must.
+- **You need encrypted output.** Out of scope; encrypt the produced
+  `.xlsx` downstream with a tool like `msoffcrypto-tool`.
+- **You want to *read* Excel.** This package is a writer. The
+  inverse direction (`.xlsx` → camt.053) is not currently in the
+  suite; open an issue if you'd find it useful.
+
 ## Development
 
 ```bash
@@ -107,6 +146,24 @@ pytest                       # 100% line + branch coverage gate
 interrogate camt053_writer_xlsx  # 100% docstring gate
 mypy camt053_writer_xlsx     # strict
 ```
+
+## Security
+
+`camt053-writer-xlsx` consumes already-parsed data, not raw XML — the
+XXE / billion-laughs surface lives upstream in the `camt053` core.
+Reporting practice, supported versions, and supply-chain posture
+(PyPI Trusted Publishing, sigstore attestations, signed tags) are
+documented in [`SECURITY.md`](SECURITY.md). Vulnerabilities go via
+GitHub Private Vulnerability Reporting, not public issues.
+
+## Documentation
+
+- [`README.md`](README.md) — this file
+- [`CHANGELOG.md`](CHANGELOG.md) — release notes
+- [`SECURITY.md`](SECURITY.md) — disclosure + supported versions
+- [`SUPPORT.md`](SUPPORT.md) — how to get help
+- [`MAINTAINERS.md`](MAINTAINERS.md) — who can merge
+- [`examples/`](examples/) — runnable scripts, exercised in CI
 
 ## License
 
