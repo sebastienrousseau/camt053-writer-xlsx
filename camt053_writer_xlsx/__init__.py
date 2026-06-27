@@ -11,6 +11,6 @@ Exposes :func:`write_xlsx`, which serialises a
 
 from camt053_writer_xlsx.writer import write_xlsx
 
-__version__ = "0.0.8"
+__version__ = "0.0.9"
 
 __all__ = ["write_xlsx", "__version__"]
