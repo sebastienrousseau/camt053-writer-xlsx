@@ -15,7 +15,7 @@ statements** — turn a `ParsedDocument` into a four-sheet workbook
 (Metadata, Balances, Entries, Reversals) that accountants, auditors,
 and reconciliation macros can consume directly.
 
-> **Latest release: v0.0.1** — single `write_xlsx(document, path)`
+> **Latest release: v0.0.14** — single `write_xlsx(document, path)`
 > function, 100% line + branch coverage, 100% docstring coverage.
 
 ## Contents
