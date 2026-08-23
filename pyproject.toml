@@ -4,7 +4,7 @@ version = "0.0.16"
 description = "Excel (.xlsx) writer for camt053-parsed ISO 20022 bank statements."
 readme = "README.md"
 requires-python = ">=3.10"
-license = "Apache-2.0"
+license = "Apache-2.0 OR MIT"
 authors = [{ name = "Sebastien Rousseau", email = "sebastian.rousseau@gmail.com" }]
 keywords = [
     "iso20022",
