@@ -8,6 +8,37 @@ This package's version follows the [`camt053`](https://github.com/sebastienrouss
 suite (`camt053`, `camt053-mcp`, `camt053-lsp`); a `0.0.X` release of
 this package targets the `0.0.X` release of `camt053`.
 
+## [0.0.20] - 2026-08-29
+
+Aligns the `camt053` suite on one version number, and adds the gates this
+repository was missing.
+
+### Added
+
+- `benches/bench_write_xlsx.py` measures time *and peak memory*. Writing
+  xlsx builds the whole workbook in memory before anything reaches disk,
+  and peak heap runs sixty to eighty times the size of the file finally
+  written — a 0.36 MB workbook costs around 28 MB. Output size is
+  therefore a bad proxy for what the process needs, and an export sized
+  from the file it produces will be killed in a container that looks
+  generously provisioned.
+- `docs/benchmarks.md` with the measured table and the honest limit:
+  `tracemalloc` sees Python allocations only, so the printed peak is a
+  floor rather than a budget.
+- `scripts/check_suite_consistency.py` and a scheduled `Suite
+  Consistency` workflow comparing this tree, and every published member
+  of the suite, against PyPI.
+- `tests/test_suite_conformance.py`, the shared suite conformance gate.
+- `CONTRIBUTING.md`, which the conformance gate requires.
+
+### Changed
+
+- Version aligned to `0.0.20` across all six `camt053` packages, which
+  had drifted to `0.0.18`, `0.0.18`, `0.0.19`, `0.0.18`, `0.0.16` and
+  `0.0.16`.
+- `SECURITY.md`'s supported-version table, which still named `0.0.14`
+  and `0.0.13` while the tree was at `0.0.16`.
+
 ## [0.0.16] - 2026-08-21
 
 Suite release with `camt053` 0.0.16. No functional change in this

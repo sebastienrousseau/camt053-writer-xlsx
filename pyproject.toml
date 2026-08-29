@@ -1,6 +1,6 @@
 [project]
 name = "camt053-writer-xlsx"
-version = "0.0.16"
+version = "0.0.20"
 description = "Excel (.xlsx) writer for camt053-parsed ISO 20022 bank statements."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -59,6 +59,10 @@ build-backend = "hatchling.build"
 packages = ["camt053_writer_xlsx"]
 
 [tool.ruff]
+# The vendored conformance test carries a sha256 of its own bytes,
+# so `ruff format` rewriting it would invalidate the very check it
+# exists to make. It is maintained centrally and formatted there.
+extend-exclude = ["tests/test_suite_conformance.py"]
 line-length = 80
 target-version = "py310"
 
