@@ -28,19 +28,21 @@ jobs:
         with:
           python-version: "3.12"
 
-      # Parse the version literals directly rather than importing the
-      # package (which would need openpyxl and camt053 installed first).
-      - name: Verify tag matches package version
+      # Every restatement of the version (pyproject, __version__,
+      # CHANGELOG, CITATION.cff, the release notes, README and SECURITY.md)
+      # must equal the tag. Standard library only, so it runs before
+      # anything is installed.
+      - name: Verify tag matches every version source
         run: |
           set -euo pipefail
           TAG="${GITHUB_REF_NAME#v}"
-          PKG_INIT=$(grep -E '^__version__' camt053_writer_xlsx/__init__.py | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
           PKG_TOML=$(grep -E '^version' pyproject.toml | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
-          echo "Tag: $TAG | __init__.py: $PKG_INIT | pyproject.toml: $PKG_TOML"
-          if [ "$TAG" != "$PKG_INIT" ] || [ "$PKG_INIT" != "$PKG_TOML" ]; then
+          echo "Tag: $TAG | pyproject.toml: $PKG_TOML"
+          if [ "$TAG" != "$PKG_TOML" ]; then
             echo "Version mismatch; aborting." >&2
             exit 1
           fi
+          python3 scripts/verify_versions.py
 
       # build, hatchling and twine come from the hash-pinned build.txt;
       # --no-isolation keeps the backend that pinned one rather than a

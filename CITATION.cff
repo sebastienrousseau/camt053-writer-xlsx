@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+cff-version: 1.2.0
+message: "If you use camt053-writer-xlsx in research or production write-ups, please cite it as below."
+type: software
+title: "camt053-writer-xlsx: Excel writer for ISO 20022 camt.053 bank statements"
+abstract: >-
+  Writes a camt053 ParsedDocument, the model the camt053 library produces
+  from ISO 20022 camt.053 XML and the camt053 MT940 and MT942 loaders
+  produce from SWIFT text, to a four-sheet Excel workbook (Metadata,
+  Balances, Entries, Reversals) with a column layout stable across releases.
+authors:
+  - family-names: Rousseau
+    given-names: Sebastien
+    email: sebastian.rousseau@gmail.com
+version: "0.0.20"
+date-released: "2026-08-29"
+license: "Apache-2.0 OR MIT"
+repository-code: "https://github.com/sebastienrousseau/camt053-writer-xlsx"
+url: "https://pypi.org/project/camt053-writer-xlsx/"
+keywords:
+  - ISO 20022
+  - camt.053
+  - bank statements
+  - Excel
+  - xlsx
