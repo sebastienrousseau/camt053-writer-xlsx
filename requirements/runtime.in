@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+# The runtime dependency tree alone, hash-pinned, for the release SBOM: the
+# built wheel installs with --no-deps on top of it, so the SBOM lists
+# exactly what a user's install resolves today. Keep in step with
+# [project].dependencies in pyproject.toml.
+# Regenerate with: make pip-compile
+camt053>=0.0.20,<1
+openpyxl>=3.1,<4
