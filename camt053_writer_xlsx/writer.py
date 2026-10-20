@@ -36,10 +36,16 @@ from camt053.models import (
     TransactionDetails,
 )
 from openpyxl import Workbook
+from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 from openpyxl.styles import Font
 
 __all__ = ["write_xlsx"]
 
+
+#: What replaces a character a worksheet cannot hold (the C0 controls other
+#: than tab, line feed and carriage return): U+FFFD, so the cell still
+#: shows where it was.
+_REPLACEMENT = "\ufffd"
 
 _METADATA_COLUMNS = [
     "message_type",
@@ -133,11 +139,27 @@ def _write_header(sheet: Any, columns: list[str]) -> None:
         cell.font = Font(bold=True)
 
 
+def _cell_value(value: Any) -> Any:
+    """Return ``value``, with characters a worksheet cannot hold replaced.
+
+    SWIFT text can carry control characters that camt.053 XML cannot, and
+    openpyxl refuses them, which would abort the whole workbook.
+    """
+    if isinstance(value, str):
+        return ILLEGAL_CHARACTERS_RE.sub(_REPLACEMENT, value)
+    return value
+
+
+def _append(sheet: Any, row: list[Any]) -> None:
+    """Append one data row to ``sheet``, every value made writable."""
+    sheet.append([_cell_value(value) for value in row])
+
+
 def _write_metadata(sheet: Any, document: ParsedDocument) -> None:
     """Populate the Metadata sheet, one row per statement."""
     _write_header(sheet, _METADATA_COLUMNS)
     for statement in document.statements:
-        sheet.append(_metadata_row(document, statement))
+        _append(sheet, _metadata_row(document, statement))
 
 
 def _metadata_row(
@@ -168,7 +190,7 @@ def _write_balances(sheet: Any, document: ParsedDocument) -> None:
     _write_header(sheet, _BALANCE_COLUMNS)
     for statement in document.statements:
         for balance in statement.balances:
-            sheet.append(_balance_row(statement, balance))
+            _append(sheet, _balance_row(statement, balance))
 
 
 def _balance_row(statement: Statement, balance: Balance) -> list[Any]:
@@ -189,7 +211,7 @@ def _write_entries(sheet: Any, document: ParsedDocument) -> None:
     for statement in document.statements:
         for entry in statement.entries:
             for row in _entry_rows(statement, entry):
-                sheet.append(row)
+                _append(sheet, row)
 
 
 def _entry_rows(
@@ -245,4 +267,4 @@ def _write_reversals(sheet: Any, document: ParsedDocument) -> None:
             if not (entry.reversal_indicator or entry.is_returnable()):
                 continue
             for row in _entry_rows(statement, entry):
-                sheet.append(row)
+                _append(sheet, row)

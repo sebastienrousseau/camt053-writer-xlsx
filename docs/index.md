@@ -45,6 +45,12 @@ the strings from the statement (`"1000.00"`, `"2026-06-21"`), so nothing is
 rounded or reinterpreted on the way in; counts are integers and
 `reversal_indicator` is a boolean. An empty field is an empty cell.
 
+One exception: a worksheet cannot hold the C0 control characters other than
+tab, line feed and carriage return. camt.053 XML cannot carry them either,
+but SWIFT text can, and the MT940 loader keeps `:86:` verbatim. Each one is
+written as U+FFFD (`�`), so the cell shows where it was, rather than
+aborting the whole workbook.
+
 ### Metadata: one row per statement
 
 `message_type`, `msg_id`, `creation_date_time`, `statement_id`,

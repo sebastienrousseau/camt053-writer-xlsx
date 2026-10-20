@@ -15,13 +15,22 @@ together at one version, core first.
 ## [0.0.23] - 2026-10-20
 
 The camt053 suite's 0.0.23 release, which brings every member back to one
-version after `camt053-mcp` published 0.0.22 alone. `write_xlsx` and the
-workbook it writes are unchanged: the same sheets, columns and cell values
-for the same document. The repository is brought up to the family's
-supply-chain, licensing and documentation standard.
+version after `camt053-mcp` published 0.0.22 alone. The workbook keeps the
+same sheets and columns; the one change to what it holds is a control
+character in statement text, which used to abort the write. The repository
+is brought up to the family's supply-chain, licensing and documentation
+standard.
 
 ### Fixed
 
+- **A control character in statement text no longer aborts the write.**
+  openpyxl refuses the C0 controls other than tab, line feed and carriage
+  return with `IllegalCharacterError`, so one of them anywhere in a
+  statement lost the whole workbook. camt.053 XML cannot carry them, but
+  SWIFT text can: an MT940 `:86:` holding `\x0b`, parsed by
+  `camt053-loader-mt940` 0.0.20, reproduced it. Each such character is now
+  written as U+FFFD, so the cell shows where it was; every other value is
+  written as before.
 - **The Suite Consistency check compares the tree with this package's own
   PyPI release.** It compared it with the core's, because the script was
   copied from the core, so it would have failed for the wrong reason as

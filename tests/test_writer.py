@@ -284,3 +284,39 @@ def test_unwritable_path_raises_oserror(tmp_path: Path) -> None:
     # A directory rather than a file path → openpyxl can't write to it.
     with pytest.raises(OSError):
         write_xlsx(document, tmp_path)
+
+
+def test_a_control_character_does_not_abort_the_write(tmp_path: Path) -> None:
+    """Text a worksheet cannot hold is replaced, not allowed to abort.
+
+    SWIFT text can carry control characters that XML cannot (the MT940
+    loader keeps ``:86:`` verbatim), and openpyxl refuses them with
+    ``IllegalCharacterError``, which used to lose the whole workbook. Each
+    one becomes U+FFFD, so the cell shows where it was.
+    """
+    document = ParsedDocument(
+        message_type="camt.053.001.08",
+        statements=[
+            Statement(
+                id="STMT-CTRL",
+                account=Account(owner_name="ACME\x0bGmbH"),
+                entries=[
+                    Entry(
+                        reference="NTRY-CTRL",
+                        amount="5.00",
+                        currency="EUR",
+                        details=[
+                            TransactionDetails(additional_info="pay\x00ment")
+                        ],
+                    )
+                ],
+            )
+        ],
+    )
+    out = tmp_path / "control.xlsx"
+
+    write_xlsx(document, out)
+
+    workbook = load_workbook(out)
+    assert workbook["Metadata"]["J2"].value == "ACME�GmbH"
+    assert workbook["Entries"]["R2"].value == "pay�ment"
