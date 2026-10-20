@@ -100,7 +100,8 @@ def write_xlsx(
             already exist; the file is overwritten if it already exists.
 
     Returns:
-        The resolved :class:`~pathlib.Path` of the written workbook.
+        ``path`` as a :class:`~pathlib.Path`, exactly as given: a relative
+        path stays relative, it is not resolved.
 
     Raises:
         OSError: If the file cannot be written (e.g. permission denied).

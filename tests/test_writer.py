@@ -254,7 +254,7 @@ def test_empty_document_writes_only_headers(tmp_path: Path) -> None:
         assert rows == []
 
 
-def test_returns_resolved_path_type(tmp_path: Path) -> None:
+def test_returns_a_path(tmp_path: Path) -> None:
     """Path argument round-trips so callers can chain on the return value."""
     document = ParsedDocument(message_type="camt.053.001.08")
     out = tmp_path / "type.xlsx"
@@ -262,6 +262,20 @@ def test_returns_resolved_path_type(tmp_path: Path) -> None:
     result = write_xlsx(document, out)
 
     assert isinstance(result, Path)
+
+
+def test_a_relative_path_is_returned_unresolved(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The documented return value: the path as given, not made absolute."""
+    monkeypatch.chdir(tmp_path)
+    document = ParsedDocument(message_type="camt.053.001.08")
+
+    result = write_xlsx(document, "relative.xlsx")
+
+    assert result == Path("relative.xlsx")
+    assert not result.is_absolute()
+    assert (tmp_path / "relative.xlsx").exists()
 
 
 def test_unwritable_path_raises_oserror(tmp_path: Path) -> None:
