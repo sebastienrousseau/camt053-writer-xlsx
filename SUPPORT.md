@@ -14,8 +14,8 @@ get help, by need.
 
 ## Questions & how-to
 
-Open a [GitHub Discussion](https://github.com/sebastienrousseau/camt053-writer-xlsx/discussions)
-with:
+Open an [issue](https://github.com/sebastienrousseau/camt053-writer-xlsx/issues/new)
+(this repository has no Discussions) with:
 
 - Python version + OS
 - `camt053-writer-xlsx` version + `camt053` version
@@ -23,8 +23,8 @@ with:
 - The full error output
 
 Cross-package questions (e.g. how does this writer interact with
-camt053's REST API?) are also welcome on the parent's
-[Discussions](https://github.com/sebastienrousseau/camt053/discussions).
+camt053's REST API?) are also welcome as an
+[issue on the core](https://github.com/sebastienrousseau/camt053/issues/new).
 
 ## Bugs
 
@@ -59,7 +59,7 @@ private disclosure process in [SECURITY.md](SECURITY.md).
 This package is open source under Apache-2.0 OR MIT. There is no paid
 support tier.
 
-- **Community support** (issues / discussions / PRs): best effort.
+- **Community support** (issues and PRs): best effort.
 - **Commercial support**: not available today. Contact
   `support@camt053.com` so the maintainer can gauge demand.
 
