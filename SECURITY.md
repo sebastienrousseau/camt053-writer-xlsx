@@ -49,7 +49,7 @@ this package is a thin output adapter.
 | **XML / XXE / billion-laughs** | Out of scope. Input is an already-parsed `ParsedDocument`, not raw XML. The camt053 core handles XML defence-in-depth via `defusedxml` + the `camt053.security.xml_guard` pre-flight. |
 | **Path traversal** | Path is treated as a writer target. Callers must validate the path before invoking the writer. `openpyxl.save()` writes only to the supplied path. |
 | **Formula injection** | All cell values are written as plain strings or numbers via `sheet.append([...])`. No formulas are constructed from user input. |
-| **Dependency CVEs** | `openpyxl >= 3.1, < 4` and `camt053 >= 0.0.5, < 1` are the only direct deps. Both are pinned and audited by GitHub Dependabot. |
+| **Dependency CVEs** | `camt053 >= 0.0.20, < 1` and `openpyxl >= 3.1, < 4` are the only runtime dependencies. CI audits every hash-pinned requirements file with `pip-audit` on every pull request, and Dependabot watches them. |
 
 ### Cryptography status
 
@@ -63,7 +63,12 @@ a tool like `msoffcrypto-tool`.
 
 - **PyPI Trusted Publishing** (OIDC, no long-lived tokens).
 - **Sigstore attestations** for sdist + wheel via
-  `pypa/gh-action-pypi-publish`.
+  `pypa/gh-action-pypi-publish`, plus keyless cosign signatures and SLSA
+  build provenance on the GitHub release.
+- **CycloneDX SBOM** of the runtime dependency tree attached to every
+  release.
+- **Pinned CI**: every action is pinned by commit and every tool installs
+  from a hash-pinned requirements file.
 - **Signed git tags**: every release tag is signed with the
   maintainer's SSH key.
 - **No `--no-verify` or `--allow-unverified` shortcuts** in any

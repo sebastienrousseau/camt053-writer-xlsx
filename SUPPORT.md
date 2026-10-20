@@ -56,7 +56,7 @@ private disclosure process in [SECURITY.md](SECURITY.md).
 
 ## Support tiers
 
-This package is open source under Apache-2.0. There is no paid
+This package is open source under Apache-2.0 OR MIT. There is no paid
 support tier.
 
 - **Community support** (issues / discussions / PRs): best effort.
@@ -65,24 +65,31 @@ support tier.
 
 ## The camt053 suite
 
-This package is one of four:
+This package is one of six, released together at one version:
 
-- [`camt053`](https://github.com/sebastienrousseau/camt053) — core
+- [`camt053`](https://github.com/sebastienrousseau/camt053): core
   library, CLI, REST API
-- [`camt053-mcp`](https://github.com/sebastienrousseau/camt053-mcp)
-  — MCP server (AI agents)
-- [`camt053-lsp`](https://github.com/sebastienrousseau/camt053-lsp)
-  — Language Server (editors)
-- [`camt053-writer-xlsx`](https://github.com/sebastienrousseau/camt053-writer-xlsx)
-  — **Excel writer (this package)**
+- [`camt053-loader-mt940`](https://github.com/sebastienrousseau/camt053-loader-mt940):
+  SWIFT MT940 loader
+- [`camt053-loader-mt942`](https://github.com/sebastienrousseau/camt053-loader-mt942):
+  SWIFT MT942 loader
+- [`camt053-writer-xlsx`](https://github.com/sebastienrousseau/camt053-writer-xlsx):
+  **Excel writer (this package)**
+- [`camt053-mcp`](https://github.com/sebastienrousseau/camt053-mcp): MCP
+  server (AI agents)
+- [`camt053-lsp`](https://github.com/sebastienrousseau/camt053-lsp):
+  Language Server (editors)
 
 Issues spanning multiple packages can be filed against `camt053`
 (the core); the maintainer will route them.
 
 ## Supported versions
 
-| Version | Supported? |
-| :--- | :--- |
-| 0.0.1 (latest) | ✅ |
+See the supported-versions table in [SECURITY.md](SECURITY.md#supported-versions).
+Requires Python 3.10+, `camt053 >= 0.0.20` and `openpyxl >= 3.1`.
 
-Requires Python 3.10+ and `camt053 >= 0.0.5`.
+## Contributing & maintaining
+
+Pull requests are welcome; start with [CONTRIBUTING.md](CONTRIBUTING.md).
+The project is looking for a second maintainer: if you review or contribute
+regularly and want release authority, say so in an issue.
