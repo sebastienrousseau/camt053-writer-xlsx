@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0 OR MIT
 # Every target runs what CI runs, from the same hash-pinned requirements.
 # Install them first into a virtual environment:
 #   pip install --require-hashes -r requirements/test.txt -r requirements/lint.txt
@@ -15,9 +17,10 @@ test: ## Tests with the 100% line and branch coverage gate, and docstrings
 	$(PYTHON) -m pytest tests/
 	interrogate -c pyproject.toml camt053_writer_xlsx
 
-lint: ## Ruff lint and format check (needs requirements/lint.txt)
+lint: ## Ruff lint, format check and REUSE compliance (needs requirements/lint.txt)
 	ruff check $(SOURCES)
 	ruff format --check $(SOURCES)
+	reuse lint
 
 format: ## Apply ruff fixes and formatting
 	ruff check --fix $(SOURCES)

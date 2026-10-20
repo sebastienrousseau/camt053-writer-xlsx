@@ -1,5 +1,5 @@
-# SPDX-License-Identifier: Apache-2.0
-# Copyright (C) 2023-2026 Sebastien Rousseau. All rights reserved.
+# SPDX-FileCopyrightText: 2023-2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0 OR MIT
 
 """Minimal example: parse a camt.053 XML string and write it to Excel.
 
