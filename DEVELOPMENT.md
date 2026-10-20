@@ -34,8 +34,10 @@ hashes.
 `make check` runs all of these except the audit, which needs network
 access. CodeQL, OpenSSF Scorecard and the daily Suite Consistency check
 (`python3 scripts/check_suite_consistency.py`, which queries PyPI) run only
-on GitHub. The writer parses no input of its own, so there is no fuzz
-target here; the parsers it consumes are fuzzed in the core and the loaders.
+on GitHub. The writer parses no input of its own, so fuzzing here is
+property-based (`tests/test_fuzz.py`, Hypothesis) over the documents it
+writes, and runs with the rest of the suite; the parsers that build those
+documents are fuzzed in the core and the loaders.
 
 ## Complexity ceilings
 
@@ -63,6 +65,9 @@ it shows.
 - `tests/test_writer.py`: the workbook, sheet by sheet and column by column.
 - `tests/test_stress.py`: large and concurrent writes, marked `perf` and
   excluded by default; run with `pytest -m perf --no-cov`.
+- `tests/test_fuzz.py`: Hypothesis builds arbitrary documents, any text in
+  any field, and checks every one writes and reads back as the model held
+  it.
 - `tests/test_check_*.py`, `tests/test_verify_versions.py`: the scripts in
   `scripts/`.
 - `tests/test_readme_template.py`: the README keeps the family's shape.

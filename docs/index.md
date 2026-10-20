@@ -48,8 +48,12 @@ rounded or reinterpreted on the way in; counts are integers and
 One exception: a worksheet cannot hold the C0 control characters other than
 tab, line feed and carriage return. camt.053 XML cannot carry them either,
 but SWIFT text can, and the MT940 loader keeps `:86:` verbatim. Each one is
-written as U+FFFD (`�`), so the cell shows where it was, rather than
-aborting the whole workbook.
+written as U+FFFD, the replacement character, so the cell shows where it
+was, rather than aborting the whole workbook.
+
+A carriage return is written as it is, but XML 1.0 end-of-line handling
+makes every reader of the workbook, `openpyxl` included, read `\r\n` and a
+lone `\r` as `\n`.
 
 ### Metadata: one row per statement
 

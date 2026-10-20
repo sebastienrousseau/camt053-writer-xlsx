@@ -318,5 +318,5 @@ def test_a_control_character_does_not_abort_the_write(tmp_path: Path) -> None:
     write_xlsx(document, out)
 
     workbook = load_workbook(out)
-    assert workbook["Metadata"]["J2"].value == "ACME�GmbH"
-    assert workbook["Entries"]["R2"].value == "pay�ment"
+    assert workbook["Metadata"]["J2"].value == "ACME\ufffdGmbH"
+    assert workbook["Entries"]["R2"].value == "pay\ufffdment"

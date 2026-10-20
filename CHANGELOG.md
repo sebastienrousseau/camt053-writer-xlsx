@@ -64,6 +64,10 @@ standard.
   `DEVELOPMENT.md`, `AGENTS.md`, a code of conduct, issue and pull request
   templates, and a `Makefile` that runs each CI gate locally.
 - A CycloneDX SBOM of the runtime dependency tree on every GitHub release.
+- Property-based fuzzing of `write_xlsx` (`tests/test_fuzz.py`,
+  Hypothesis): arbitrary documents, any text in any field, must write and
+  read back as the model held them. Run on the pre-fix writer it finds the
+  control-character failure above.
 
 ### Changed
 

@@ -22,3 +22,5 @@ dist/
 out_*.xlsx
 # complexipy writes its cache to the working directory (make complexity).
 .complexipy_cache/
+# Hypothesis example database (tests/test_fuzz.py).
+.hypothesis/
