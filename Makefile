@@ -2,7 +2,7 @@
 # Install them first into a virtual environment:
 #   pip install --require-hashes -r requirements/test.txt -r requirements/lint.txt
 #   pip install --no-deps -e .
-.PHONY: help test lint format type-check audit pip-compile benchmark examples check clean
+.PHONY: help test lint format type-check complexity audit pip-compile benchmark examples check clean
 
 PYTHON ?= python3
 SOURCES = camt053_writer_xlsx/ tests/ examples/ benches/ scripts/
@@ -26,6 +26,10 @@ format: ## Apply ruff fixes and formatting
 type-check: ## mypy --strict over the package and scripts
 	mypy camt053_writer_xlsx/ scripts/
 
+complexity: ## Complexity ceilings against complexity-baseline.json (needs requirements/complexity.txt)
+	$(PYTHON) scripts/check_complexity.py
+	complexipy camt053_writer_xlsx scripts benches examples --max-complexity-allowed 15 --quiet
+
 audit: ## pip-audit every hash-pinned requirements file (needs requirements/audit.txt)
 	@for f in requirements/*.txt; do \
 		echo "--- $$f"; \
@@ -46,7 +50,7 @@ benchmark: ## Run the benchmark in quick mode
 examples: ## Run every example end to end
 	@for example in examples/*.py; do echo "--- $$example"; $(PYTHON) "$$example" || exit 1; done
 
-check: lint type-check test benchmark examples ## Everything CI runs on a pull request, except the audit
+check: lint type-check complexity test benchmark examples ## Everything CI runs on a pull request, except the audit
 
 clean: ## Remove build artefacts and caches
 	rm -rf build/ dist/ *.egg-info .pytest_cache/ .mypy_cache/ .ruff_cache/ htmlcov/ coverage.xml .coverage

@@ -45,6 +45,11 @@ dev = [
     # scripts/check_suite_consistency.py, imported by its tests, reads
     # pyproject.toml with tomllib, which is stdlib only from 3.11.
     'tomli >= 2 ; python_version < "3.11"',
+    # tests/test_suite_conformance.py reads the dependency specifiers.
+    "packaging >= 23",
+    # scripts/check_complexity.py and its tests.
+    "radon >= 6.0.1",
+    "complexipy >= 8.1",
 ]
 
 [project.urls]
@@ -116,4 +121,10 @@ ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 module = "camt053.*"
+ignore_missing_imports = true
+
+# radon ships no type information (no py.typed, no stubs). It is used only
+# by scripts/check_complexity.py, whose own code is still checked strictly.
+[[tool.mypy.overrides]]
+module = "radon.*"
 ignore_missing_imports = true
