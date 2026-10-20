@@ -74,6 +74,34 @@ a tool like `msoffcrypto-tool`.
 - **No `--no-verify` or `--allow-unverified` shortcuts** in any
   release workflow.
 
+## Accepted OpenSSF Scorecard findings
+
+The repository runs [OpenSSF Scorecard](https://scorecard.dev/) weekly and on
+every push to `main`, and treats its results as advisory. The checks below
+are **accepted risks**: code or configuration cannot resolve them for a
+single-maintainer project, so they are recorded here to keep their status
+explicit.
+
+- **Branch-Protection**: `main` requires the `Analyze (Python) (python)`,
+  `Lint & Type Check` and `Test (Python 3.10)` checks and linear history,
+  enforced for admins. Scorecard's higher tiers also want required approving
+  reviews, which a single maintainer cannot give to their own pull requests
+  (see [`MAINTAINERS.md`](MAINTAINERS.md)).
+- **Code-Review**: Scorecard expects each change to be approved by a second
+  person. With one maintainer that is structurally impossible; every change
+  still goes through a pull request gated by CI. Accepted until a second
+  maintainer joins.
+- **Maintained**: a heuristic over recent commit and issue activity that
+  lags after a quiet period between suite releases.
+- **CII-Best-Practices**: the project is not yet registered at
+  [bestpractices.dev](https://www.bestpractices.dev/); Scorecard scores 10
+  only for a Gold badge, which needs two or more significant contributors.
+
+Every check code can satisfy is satisfied: Pinned-Dependencies (actions
+pinned by commit, hash-pinned `pip` installs), Token-Permissions
+(least-privilege workflow tokens), SAST (CodeQL on every push and pull
+request), Fuzzing (Atheris) and Dangerous-Workflow.
+
 ## Contact
 
 - **GitHub Private Vulnerability Reporting (preferred):**
