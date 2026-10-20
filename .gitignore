@@ -20,3 +20,5 @@ dist/
 .DS_Store
 # Written by examples/*.py when run from the repository root.
 out_*.xlsx
+# complexipy writes its cache to the working directory (make complexity).
+.complexipy_cache/
