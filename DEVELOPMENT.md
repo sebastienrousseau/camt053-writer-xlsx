@@ -27,17 +27,17 @@ hashes.
 | Lint & Type Check | `make lint type-check` (ruff, ruff format, `reuse lint`, mypy strict) |
 | Complexity | `make complexity` (needs `requirements/complexity.txt`) |
 | Dependency audit | `make audit` (needs `requirements/audit.txt`) |
+| Fuzz (Atheris) | `make fuzz` (Linux x86_64 only, needs `requirements/fuzz.txt`); `tests/test_fuzz.py` runs the same contract with Hypothesis anywhere |
 | Version sources agree | `make verify-versions` |
 | Release Notes Present | `releases/v<version>.md` must exist |
 | DCO | every commit carries `Signed-off-by:` (`git commit -s`) |
 
 `make check` runs all of these except the audit, which needs network
-access. CodeQL, OpenSSF Scorecard and the daily Suite Consistency check
+access, and Atheris, which needs Linux x86_64. CodeQL, OpenSSF Scorecard and the daily Suite Consistency check
 (`python3 scripts/check_suite_consistency.py`, which queries PyPI) run only
-on GitHub. The writer parses no input of its own, so fuzzing here is
-property-based (`tests/test_fuzz.py`, Hypothesis) over the documents it
-writes, and runs with the rest of the suite; the parsers that build those
-documents are fuzzed in the core and the loaders.
+on GitHub. The writer parses no input of its own, so both fuzzers build
+arbitrary documents and check what reaches the workbook; the parsers that
+build real documents are fuzzed in the core and the loaders.
 
 ## Complexity ceilings
 

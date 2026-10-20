@@ -39,7 +39,7 @@ from radon.metrics import h_visit
 
 ROOT = Path(__file__).resolve().parent.parent
 BASELINE = ROOT / "complexity-baseline.json"
-PATHS = ("camt053_writer_xlsx", "scripts", "benches", "examples")
+PATHS = ("camt053_writer_xlsx", "scripts", "benches", "examples", "fuzz")
 
 CEILINGS: dict[str, float] = {
     "cyclomatic": 10,

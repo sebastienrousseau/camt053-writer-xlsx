@@ -66,8 +66,10 @@ standard.
 - A CycloneDX SBOM of the runtime dependency tree on every GitHub release.
 - Property-based fuzzing of `write_xlsx` (`tests/test_fuzz.py`,
   Hypothesis): arbitrary documents, any text in any field, must write and
-  read back as the model held them. Run on the pre-fix writer it finds the
-  control-character failure above.
+  read back as the model held them, and the same contract as an Atheris
+  harness (`fuzz/fuzz_write_xlsx.py`) in a Fuzz workflow, two minutes per
+  change and thirty weekly. Both find the control-character failure above
+  when run against the previous writer.
 
 ### Changed
 

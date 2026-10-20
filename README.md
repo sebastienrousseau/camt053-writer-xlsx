@@ -252,7 +252,8 @@ make check
 `make check` runs ruff, `reuse lint`, mypy in strict mode, the complexity
 ceilings, the version-agreement check, pytest with a 100% line and branch
 coverage gate, interrogate at 100% docstring coverage, the benchmark and the
-examples. CI also runs the dependency audit (`pip-audit`), CodeQL, OpenSSF
+examples. CI also runs the dependency audit (`pip-audit`), Atheris fuzzing
+of `write_xlsx` (two minutes per change, thirty weekly), CodeQL, OpenSSF
 Scorecard, the DCO check and a daily Suite Consistency check against PyPI.
 See [`DEVELOPMENT.md`](DEVELOPMENT.md) and [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
