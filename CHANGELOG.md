@@ -8,8 +8,65 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This package's version follows the [`camt053`](https://github.com/sebastienrousseau/camt053)
-suite (`camt053`, `camt053-mcp`, `camt053-lsp`); a `0.0.X` release of
-this package targets the `0.0.X` release of `camt053`.
+suite (`camt053`, `camt053-lsp`, `camt053-mcp`, `camt053-loader-mt940`,
+`camt053-loader-mt942`, `camt053-writer-xlsx`), which releases every member
+together at one version, core first.
+
+## [0.0.23] - 2026-10-20
+
+The camt053 suite's 0.0.23 release, which brings every member back to one
+version after `camt053-mcp` published 0.0.22 alone. `write_xlsx` and the
+workbook it writes are unchanged: the same sheets, columns and cell values
+for the same document. The repository is brought up to the family's
+supply-chain, licensing and documentation standard.
+
+### Fixed
+
+- **The Suite Consistency check compares the tree with this package's own
+  PyPI release.** It compared it with the core's, because the script was
+  copied from the core, so it would have failed for the wrong reason as
+  soon as the core released first, and could not see a version bumped here
+  and never published. It is now the family's shared copy, with `THIS`
+  naming this package.
+- **Every restatement of the version is checked.** The README's "Latest
+  release" line said v0.0.14 through the 0.0.16 and 0.0.20 releases, and
+  there was no `CITATION.cff`. `scripts/verify_versions.py` now compares
+  `pyproject.toml` with `__version__`, this changelog, `CITATION.cff`, the
+  release notes, the README and `SECURITY.md`, on every pull request and
+  before a release is built.
+- **`write_xlsx`'s docstring** promised a resolved path; it returns the path
+  as given, and now says so.
+- `CONTRIBUTING.md` described a loader, `SUPPORT.md` listed four suite
+  members and a camt053 0.0.5 floor, and `SECURITY.md` named the same old
+  floor.
+
+### Added
+
+- OpenSSF Scorecard, a Dependabot configuration for pip and GitHub Actions,
+  a DCO check, and a `pip-audit` job over every hash-pinned requirements
+  file.
+- A complexity gate (`scripts/check_complexity.py` and complexipy): per
+  function cyclomatic 10, cognitive 15, Halstead difficulty 30, 60 lines,
+  and 500 lines per file, against a baseline that may only shrink. It is
+  empty: nothing here is over a ceiling.
+- `CITATION.cff`, REUSE licensing on every file (`reuse lint` in CI), a
+  rendered demo, a user manual with the full column reference
+  (`docs/index.md`), `docs/COMPARISON.md`, `docs/POLICIES.md`,
+  `DEVELOPMENT.md`, `AGENTS.md`, a code of conduct, issue and pull request
+  templates, and a `Makefile` that runs each CI gate locally.
+- A CycloneDX SBOM of the runtime dependency tree on every GitHub release.
+
+### Changed
+
+- **Requires `camt053` 0.0.20 or newer** (was 0.0.16), still below 1.
+- CI and the release job install every tool from hash-pinned
+  `requirements/*.txt` and pin every action by commit. The release builds
+  with `--no-isolation` against the pinned backend, runs
+  `twine check --strict`, and titles the GitHub release
+  `camt053-writer-xlsx <version>`.
+- The README follows the family template. `docs/benchmarks.md` is now
+  `docs/BENCHMARKS.md`.
+- The wheel declares the MIT licence classifier beside the Apache one.
 
 ## [0.0.20] - 2026-08-29
 
