@@ -35,7 +35,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "camt053 >= 0.0.20, < 1",
+    "camt053 >= 0.0.23, < 1",
     "openpyxl >= 3.1, < 4",
 ]
 

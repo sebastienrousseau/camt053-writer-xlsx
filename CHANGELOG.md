@@ -41,8 +41,8 @@ standard.
   release" line said v0.0.14 through the 0.0.16 and 0.0.20 releases, and
   there was no `CITATION.cff`. `scripts/verify_versions.py` now compares
   `pyproject.toml` with `__version__`, this changelog, `CITATION.cff`, the
-  release notes, the README and `SECURITY.md`, on every pull request and
-  before a release is built.
+  release notes, the README, `SECURITY.md` and the `camt053` floor, on
+  every pull request and before a release is built.
 - **`write_xlsx`'s docstring** promised a resolved path; it returns the path
   as given, and now says so.
 - `CONTRIBUTING.md` described a loader, `SUPPORT.md` listed four suite
@@ -73,7 +73,13 @@ standard.
 
 ### Changed
 
-- **Requires `camt053` 0.0.20 or newer** (was 0.0.16), still below 1.
+- **Requires `camt053` 0.0.23 or newer** (was 0.0.16), still below 1. The
+  suite releases core first at one version, and core 0.0.23 is the first
+  to floor its advised dependencies (`fastapi` 0.109.1 for PYSEC-2024-38,
+  `starlette` 1.3.1, `cryptography` 50.0.0 and others); a lower floor here
+  let an older core resolve, and an affected `fastapi` with it.
+  `scripts/verify_versions.py` now fails when the floor in
+  `pyproject.toml` or `requirements/*.in` is not this version.
 - CI and the release job install every tool from hash-pinned
   `requirements/*.txt` and pin every action by commit. The release builds
   with `--no-isolation` against the pinned backend, runs

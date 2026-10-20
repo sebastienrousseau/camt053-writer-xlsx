@@ -49,7 +49,7 @@ this package is a thin output adapter.
 | **XML / XXE / billion-laughs** | Out of scope. Input is an already-parsed `ParsedDocument`, not raw XML. The camt053 core handles XML defence-in-depth via `defusedxml` + the `camt053.security.xml_guard` pre-flight. |
 | **Path traversal** | Path is treated as a writer target. Callers must validate the path before invoking the writer. `openpyxl.save()` writes only to the supplied path. |
 | **Formula injection** | All cell values are written as plain strings or numbers via `sheet.append([...])`. No formulas are constructed from user input. |
-| **Dependency CVEs** | `camt053 >= 0.0.20, < 1` and `openpyxl >= 3.1, < 4` are the only runtime dependencies. CI audits every hash-pinned requirements file with `pip-audit` on every pull request, and Dependabot watches them. |
+| **Dependency CVEs** | `camt053 >= 0.0.23, < 1` and `openpyxl >= 3.1, < 4` are the only runtime dependencies. CI audits every hash-pinned requirements file with `pip-audit` on every pull request, and Dependabot watches them. |
 
 ### Cryptography status
 
