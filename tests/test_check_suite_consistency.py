@@ -75,8 +75,10 @@ def test_unreleased_bump_names_this_distribution(script):
     """A bump that never reached PyPI is reported against this package."""
     problems = script("0.0.23", _suite("0.0.23", camt053_writer_xlsx="0.0.22"))
     assert problems == [
-        "camt053-writer-xlsx: tree is 0.0.23 but PyPI has 0.0.22. Either "
-        "the release was never tagged, or the tree is behind.",
+        (
+            "camt053-writer-xlsx: tree is 0.0.23 but PyPI has 0.0.22. Either "
+            "the release was never tagged, or the tree is behind."
+        ),
         "camt053-writer-xlsx: published 0.0.22, but the suite is at 0.0.23",
     ]
 

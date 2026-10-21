@@ -32,7 +32,7 @@ from openpyxl import load_workbook
 from camt053_writer_xlsx import write_xlsx
 
 #: The characters openpyxl refuses, as the writer replaces them.
-_UNWRITABLE = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\ufffe\uffff]")
+_UNWRITABLE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\ufffe\uffff]")
 
 text = st.none() | st.text(max_size=40)
 

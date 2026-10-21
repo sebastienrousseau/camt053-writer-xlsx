@@ -46,7 +46,7 @@ __all__ = ["write_xlsx"]
 #: feed and carriage return, which openpyxl refuses, and the non-characters
 #: U+FFFE and U+FFFF, which it writes into XML that no reader can parse.
 #: None is an XML 1.0 character.
-_UNSTORABLE = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\ufffe\uffff]")
+_UNSTORABLE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\ufffe\uffff]")
 
 #: What replaces each of them: U+FFFD, so the cell still shows where it was.
 _REPLACEMENT = "\ufffd"
