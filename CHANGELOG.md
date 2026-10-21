@@ -21,6 +21,19 @@ character in statement text, which used to abort the write. The repository
 is brought up to the family's supply-chain, licensing and documentation
 standard.
 
+### Security
+
+- **Statement text that starts with `=` is written as text, not as a
+  formula** (CWE-1236). openpyxl stores any string that starts with `=` as
+  a formula, and `write_xlsx` passed every value to it unchanged, so a
+  counterparty name, narrative or identifier beginning with `=` reached the
+  workbook as a live formula, evaluated when the file was opened: for
+  example `=HYPERLINK(...)` in a camt.053 `<Nm>` or an MT940 `:86:` line.
+  Every data cell openpyxl marks as a formula is now set back to a string.
+  Headers are fixed strings; the writer builds no formula on purpose.
+  `SECURITY.md`'s threat model, which said no formula is built from
+  statement input, now describes this.
+
 ### Fixed
 
 - **A control character in statement text no longer aborts the write.**

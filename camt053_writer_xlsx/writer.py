@@ -156,8 +156,17 @@ def _cell_value(value: Any) -> Any:
 
 
 def _append(sheet: Any, row: list[Any]) -> None:
-    """Append one data row to ``sheet``, every value made writable."""
+    """Append one data row to ``sheet``, every value kept as data.
+
+    openpyxl stores any string that starts with ``=`` as a formula. Every
+    value here comes from a bank statement, so a cell openpyxl marked as a
+    formula is set back to a string: it shows the statement's text and is
+    never evaluated when the workbook is opened.
+    """
     sheet.append([_cell_value(value) for value in row])
+    for cell in sheet[sheet.max_row]:
+        if cell.data_type == "f":
+            cell.data_type = "s"
 
 
 def _write_metadata(sheet: Any, document: ParsedDocument) -> None:
