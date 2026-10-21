@@ -31,6 +31,11 @@ standard.
   `camt053-loader-mt940` 0.0.20, reproduced it. Each such character is now
   written as U+FFFD, so the cell shows where it was; every other value is
   written as before.
+- **U+FFFE and U+FFFF no longer leave a workbook that cannot be opened.**
+  Neither is an XML 1.0 character, but openpyxl writes them, and the
+  worksheet is then not well-formed: `load_workbook` raised `ParseError`
+  and a spreadsheet application would refuse the file. The Atheris harness
+  found it. They are now written as U+FFFD, like the control characters.
 - **The Suite Consistency check compares the tree with this package's own
   PyPI release.** It compared it with the core's, because the script was
   copied from the core, so it would have failed for the wrong reason as

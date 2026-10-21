@@ -286,6 +286,34 @@ def test_unwritable_path_raises_oserror(tmp_path: Path) -> None:
         write_xlsx(document, tmp_path)
 
 
+@pytest.mark.parametrize("char", ["\ufffe", "\uffff"])
+def test_a_non_character_does_not_corrupt_the_workbook(
+    tmp_path: Path, char: str
+) -> None:
+    """U+FFFE and U+FFFF are not XML 1.0 characters either.
+
+    openpyxl writes them without complaint, and the saved worksheet is then
+    not well-formed: ``load_workbook``, and Excel, cannot open it. The
+    Atheris harness found this. Each becomes U+FFFD, like a control
+    character.
+    """
+    document = ParsedDocument(
+        message_type="camt.053.001.08",
+        statements=[
+            Statement(
+                id="STMT-NONCHAR",
+                account=Account(owner_name=f"ACME{char}GmbH"),
+                entries=[],
+            )
+        ],
+    )
+    out = tmp_path / "nonchar.xlsx"
+
+    write_xlsx(document, out)
+
+    assert load_workbook(out)["Metadata"]["J2"].value == "ACME\ufffdGmbH"
+
+
 def test_a_control_character_does_not_abort_the_write(tmp_path: Path) -> None:
     """Text a worksheet cannot hold is replaced, not allowed to abort.
 

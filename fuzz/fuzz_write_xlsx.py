@@ -40,7 +40,7 @@ with atheris.instrument_imports():
 
     from camt053_writer_xlsx import write_xlsx
 
-_UNWRITABLE = re.compile(r"[\000-\010\013\014\016-\037]")
+_UNWRITABLE = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\ufffe\uffff]")
 _OUT = Path(tempfile.mkdtemp(prefix="fuzz-xlsx-")) / "fuzz.xlsx"
 
 

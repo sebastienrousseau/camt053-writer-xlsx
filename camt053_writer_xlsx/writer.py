@@ -24,6 +24,7 @@ Reversals
 
 from __future__ import annotations
 
+import re
 from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
@@ -36,15 +37,18 @@ from camt053.models import (
     TransactionDetails,
 )
 from openpyxl import Workbook
-from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 from openpyxl.styles import Font
 
 __all__ = ["write_xlsx"]
 
 
-#: What replaces a character a worksheet cannot hold (the C0 controls other
-#: than tab, line feed and carriage return): U+FFFD, so the cell still
-#: shows where it was.
+#: Characters a worksheet cannot hold: the C0 controls other than tab, line
+#: feed and carriage return, which openpyxl refuses, and the non-characters
+#: U+FFFE and U+FFFF, which it writes into XML that no reader can parse.
+#: None is an XML 1.0 character.
+_UNSTORABLE = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\ufffe\uffff]")
+
+#: What replaces each of them: U+FFFD, so the cell still shows where it was.
 _REPLACEMENT = "\ufffd"
 
 _METADATA_COLUMNS = [
@@ -143,10 +147,11 @@ def _cell_value(value: Any) -> Any:
     """Return ``value``, with characters a worksheet cannot hold replaced.
 
     SWIFT text can carry control characters that camt.053 XML cannot, and
-    openpyxl refuses them, which would abort the whole workbook.
+    openpyxl refuses them, which would abort the whole workbook; U+FFFE and
+    U+FFFF it writes, leaving a workbook that cannot be opened.
     """
     if isinstance(value, str):
-        return ILLEGAL_CHARACTERS_RE.sub(_REPLACEMENT, value)
+        return _UNSTORABLE.sub(_REPLACEMENT, value)
     return value
 
 
