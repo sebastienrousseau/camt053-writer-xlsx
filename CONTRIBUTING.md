@@ -1,54 +1,58 @@
+<!-- SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com> -->
+<!-- SPDX-License-Identifier: Apache-2.0 OR MIT -->
+
 # Contributing
 
 Thanks for looking. This package is small on purpose: it turns a parsed
-document into a multi-sheet `.xlsx` workbook, and nothing else.
+camt053 document into a multi-sheet `.xlsx` workbook, and nothing else.
 
 ## Before you open a pull request
 
-Everything CI checks, you can run locally:
+Everything CI checks, you can run locally. Set up as in
+[`DEVELOPMENT.md`](DEVELOPMENT.md), then:
 
 ```sh
-pip install -e ".[dev]"
-pytest                                        # tests + the coverage gate
-ruff check camt053_writer_xlsx/ tests/ examples/ benches/ scripts/
-ruff format --check camt053_writer_xlsx/ tests/ examples/ benches/ scripts/
-mypy camt053_writer_xlsx/
-python benches/bench_write_xlsx.py --quick   # the benchmark still runs
+make check
 ```
 
+Every commit must be signed off (`git commit -s`): the DCO check fails a
+pull request otherwise. See [`DCO.txt`](DCO.txt) for what that certifies.
+Use a [Conventional Commits](https://www.conventionalcommits.org/) title, and
+fill in the pull request template.
+
 `pytest` fails below **100% branch coverage**. That is not a stretch goal
-here — the package is a few hundred lines, and the branches that go untested
-are the malformed-input ones, which is exactly where a statement parser earns
-its keep.
+here: the package is a few hundred lines, and every branch decides what
+lands in a cell somebody will reconcile against.
 
 ## What the tests are for
 
-- `tests/test_loader.py` — the parse itself, valid and malformed.
-- `tests/test_stress.py` — large payloads, marked `perf` and excluded from
-  the default run. Select with `pytest -m perf --no-cov`.
-- `tests/test_suite_conformance.py` — shared across all 32 repositories in
+- `tests/test_writer.py`: the workbook itself, every sheet and column.
+- `tests/test_stress.py`: large and concurrent writes, marked `perf` and
+  excluded from the default run. Select with `pytest -m perf --no-cov`.
+- `tests/test_suite_conformance.py`: shared across all 32 repositories in
   the suite. **Do not edit it here.** It is generated from one canonical copy,
   and a local edit fails `test_this_file_is_the_canonical_copy` by design;
   the point is that no repository can quietly weaken a shared gate.
 
 ## Benchmarks
 
-`benches/` measures throughput as statements grow. It asserts nothing —
-wall-clock numbers are not comparable between machines — but CI runs it with
-`--quick` so a benchmark that has stopped compiling against the current API
-fails the build rather than rotting unnoticed.
+`benches/bench_write_xlsx.py` measures time and peak memory as statements
+grow. It asserts nothing, because wall-clock numbers are not comparable
+between machines, but CI runs it with `--quick` so a benchmark that has
+stopped running against the current API fails the build rather than rotting
+unnoticed.
 
-Read the `ns/entry` column. Flat across sizes means linear. A number that
-climbs with size means the parser has gone superlinear, which no unit test
-will tell you and a month-end statement file will.
+Read the peak/file column. It says how much memory an export needs for a
+file of a given size, which is the number that decides whether a job
+survives in a container.
 
 ## Versioning
 
-The version is restated in `pyproject.toml` and
-`camt053_writer_xlsx/__init__.py`. Change both, add a `CHANGELOG.md` entry,
-and the conformance tests will confirm they agree — they exist because the
-suite has already published a release whose `__version__` reported the
-previous one.
+The version is restated in `pyproject.toml`,
+`camt053_writer_xlsx/__init__.py`, `CITATION.cff`, the README's
+latest-release callout, `SECURITY.md`, a `CHANGELOG.md` heading and
+`releases/v<version>.md`. `make verify-versions` fails until they all
+agree.
 
 **Versions increment by 0.0.1.** `0.1.0` follows `0.0.999`, not `0.0.9`.
 

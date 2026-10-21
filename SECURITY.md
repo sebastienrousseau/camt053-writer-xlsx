@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com> -->
+<!-- SPDX-License-Identifier: Apache-2.0 OR MIT -->
 
 # Security Policy
 
@@ -12,8 +13,8 @@ the latest major. While pre-`1.0`, that means **the latest released
 
 | Version | Status | Receives security fixes? |
 | :--- | :--- | :--- |
-| `0.0.20` (latest) | Current | ✅ Yes |
-| `0.0.19` | Prior | ✅ Yes |
+| `0.0.23` (latest) | Current | ✅ Yes |
+| `0.0.20` | Prior | ✅ Yes |
 
 ## Reporting a vulnerability
 
@@ -48,7 +49,7 @@ this package is a thin output adapter.
 | **XML / XXE / billion-laughs** | Out of scope. Input is an already-parsed `ParsedDocument`, not raw XML. The camt053 core handles XML defence-in-depth via `defusedxml` + the `camt053.security.xml_guard` pre-flight. |
 | **Path traversal** | Path is treated as a writer target. Callers must validate the path before invoking the writer. `openpyxl.save()` writes only to the supplied path. |
 | **Formula injection** | All cell values are written as plain strings or numbers via `sheet.append([...])`. No formulas are constructed from user input. |
-| **Dependency CVEs** | `openpyxl >= 3.1, < 4` and `camt053 >= 0.0.5, < 1` are the only direct deps. Both are pinned and audited by GitHub Dependabot. |
+| **Dependency CVEs** | `camt053 >= 0.0.23, < 1` and `openpyxl >= 3.1, < 4` are the only runtime dependencies. CI audits every hash-pinned requirements file with `pip-audit` on every pull request, and Dependabot watches them. |
 
 ### Cryptography status
 
@@ -62,11 +63,44 @@ a tool like `msoffcrypto-tool`.
 
 - **PyPI Trusted Publishing** (OIDC, no long-lived tokens).
 - **Sigstore attestations** for sdist + wheel via
-  `pypa/gh-action-pypi-publish`.
+  `pypa/gh-action-pypi-publish`, plus keyless cosign signatures and SLSA
+  build provenance on the GitHub release.
+- **CycloneDX SBOM** of the runtime dependency tree attached to every
+  release.
+- **Pinned CI**: every action is pinned by commit and every tool installs
+  from a hash-pinned requirements file.
 - **Signed git tags**: every release tag is signed with the
   maintainer's SSH key.
 - **No `--no-verify` or `--allow-unverified` shortcuts** in any
   release workflow.
+
+## Accepted OpenSSF Scorecard findings
+
+The repository runs [OpenSSF Scorecard](https://scorecard.dev/) weekly and on
+every push to `main`, and treats its results as advisory. The checks below
+are **accepted risks**: code or configuration cannot resolve them for a
+single-maintainer project, so they are recorded here to keep their status
+explicit.
+
+- **Branch-Protection**: `main` requires the `Analyze (Python) (python)`,
+  `Lint & Type Check` and `Test (Python 3.10)` checks and linear history,
+  enforced for admins. Scorecard's higher tiers also want required approving
+  reviews, which a single maintainer cannot give to their own pull requests
+  (see [`MAINTAINERS.md`](MAINTAINERS.md)).
+- **Code-Review**: Scorecard expects each change to be approved by a second
+  person. With one maintainer that is structurally impossible; every change
+  still goes through a pull request gated by CI. Accepted until a second
+  maintainer joins.
+- **Maintained**: a heuristic over recent commit and issue activity that
+  lags after a quiet period between suite releases.
+- **CII-Best-Practices**: the project is not yet registered at
+  [bestpractices.dev](https://www.bestpractices.dev/); Scorecard scores 10
+  only for a Gold badge, which needs two or more significant contributors.
+
+Every check code can satisfy is satisfied: Pinned-Dependencies (actions
+pinned by commit, hash-pinned `pip` installs), Token-Permissions
+(least-privilege workflow tokens), SAST (CodeQL on every push and pull
+request), Fuzzing (Atheris) and Dangerous-Workflow.
 
 ## Contact
 

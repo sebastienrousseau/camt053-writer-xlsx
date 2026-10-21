@@ -1,5 +1,5 @@
-# SPDX-License-Identifier: Apache-2.0
-# Copyright (C) 2023-2026 Sebastien Rousseau. All rights reserved.
+# SPDX-FileCopyrightText: 2023-2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0 OR MIT
 
 """Tests for the camt053-writer-xlsx writer."""
 
@@ -254,7 +254,7 @@ def test_empty_document_writes_only_headers(tmp_path: Path) -> None:
         assert rows == []
 
 
-def test_returns_resolved_path_type(tmp_path: Path) -> None:
+def test_returns_a_path(tmp_path: Path) -> None:
     """Path argument round-trips so callers can chain on the return value."""
     document = ParsedDocument(message_type="camt.053.001.08")
     out = tmp_path / "type.xlsx"
@@ -264,9 +264,87 @@ def test_returns_resolved_path_type(tmp_path: Path) -> None:
     assert isinstance(result, Path)
 
 
+def test_a_relative_path_is_returned_unresolved(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The documented return value: the path as given, not made absolute."""
+    monkeypatch.chdir(tmp_path)
+    document = ParsedDocument(message_type="camt.053.001.08")
+
+    result = write_xlsx(document, "relative.xlsx")
+
+    assert result == Path("relative.xlsx")
+    assert not result.is_absolute()
+    assert (tmp_path / "relative.xlsx").exists()
+
+
 def test_unwritable_path_raises_oserror(tmp_path: Path) -> None:
     """An unwritable target surfaces an OSError unchanged."""
     document = ParsedDocument(message_type="camt.053.001.08")
     # A directory rather than a file path → openpyxl can't write to it.
     with pytest.raises(OSError):
         write_xlsx(document, tmp_path)
+
+
+@pytest.mark.parametrize("char", ["\ufffe", "\uffff"])
+def test_a_non_character_does_not_corrupt_the_workbook(
+    tmp_path: Path, char: str
+) -> None:
+    """U+FFFE and U+FFFF are not XML 1.0 characters either.
+
+    openpyxl writes them without complaint, and the saved worksheet is then
+    not well-formed: ``load_workbook``, and Excel, cannot open it. The
+    Atheris harness found this. Each becomes U+FFFD, like a control
+    character.
+    """
+    document = ParsedDocument(
+        message_type="camt.053.001.08",
+        statements=[
+            Statement(
+                id="STMT-NONCHAR",
+                account=Account(owner_name=f"ACME{char}GmbH"),
+                entries=[],
+            )
+        ],
+    )
+    out = tmp_path / "nonchar.xlsx"
+
+    write_xlsx(document, out)
+
+    assert load_workbook(out)["Metadata"]["J2"].value == "ACME\ufffdGmbH"
+
+
+def test_a_control_character_does_not_abort_the_write(tmp_path: Path) -> None:
+    """Text a worksheet cannot hold is replaced, not allowed to abort.
+
+    SWIFT text can carry control characters that XML cannot (the MT940
+    loader keeps ``:86:`` verbatim), and openpyxl refuses them with
+    ``IllegalCharacterError``, which used to lose the whole workbook. Each
+    one becomes U+FFFD, so the cell shows where it was.
+    """
+    document = ParsedDocument(
+        message_type="camt.053.001.08",
+        statements=[
+            Statement(
+                id="STMT-CTRL",
+                account=Account(owner_name="ACME\x0bGmbH"),
+                entries=[
+                    Entry(
+                        reference="NTRY-CTRL",
+                        amount="5.00",
+                        currency="EUR",
+                        details=[
+                            TransactionDetails(additional_info="pay\x00ment")
+                        ],
+                    )
+                ],
+            )
+        ],
+    )
+    out = tmp_path / "control.xlsx"
+
+    write_xlsx(document, out)
+
+    workbook = load_workbook(out)
+    assert workbook["Metadata"]["J2"].value == "ACME\ufffdGmbH"
+    assert workbook["Entries"]["R2"].value == "pay\ufffdment"

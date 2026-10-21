@@ -1,5 +1,5 @@
-# SPDX-License-Identifier: Apache-2.0
-# Copyright (C) 2023-2026 Sebastien Rousseau. All rights reserved.
+# SPDX-FileCopyrightText: 2023-2026 Sebastien Rousseau <sebastian.rousseau@gmail.com>
+# SPDX-License-Identifier: Apache-2.0 OR MIT
 
 """Excel (.xlsx) writer for camt053-parsed bank statements.
 
@@ -11,6 +11,6 @@ Exposes :func:`write_xlsx`, which serialises a
 
 from camt053_writer_xlsx.writer import write_xlsx
 
-__version__ = "0.0.20"
+__version__ = "0.0.23"
 
 __all__ = ["write_xlsx", "__version__"]

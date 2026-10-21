@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-FileCopyrightText: 2026 Sebastien Rousseau <sebastian.rousseau@gmail.com> -->
+<!-- SPDX-License-Identifier: Apache-2.0 OR MIT -->
 
 # Getting support
 
@@ -13,8 +14,8 @@ get help, by need.
 
 ## Questions & how-to
 
-Open a [GitHub Discussion](https://github.com/sebastienrousseau/camt053-writer-xlsx/discussions)
-with:
+Open an [issue](https://github.com/sebastienrousseau/camt053-writer-xlsx/issues/new)
+(this repository has no Discussions) with:
 
 - Python version + OS
 - `camt053-writer-xlsx` version + `camt053` version
@@ -22,8 +23,8 @@ with:
 - The full error output
 
 Cross-package questions (e.g. how does this writer interact with
-camt053's REST API?) are also welcome on the parent's
-[Discussions](https://github.com/sebastienrousseau/camt053/discussions).
+camt053's REST API?) are also welcome as an
+[issue on the core](https://github.com/sebastienrousseau/camt053/issues/new).
 
 ## Bugs
 
@@ -55,33 +56,40 @@ private disclosure process in [SECURITY.md](SECURITY.md).
 
 ## Support tiers
 
-This package is open source under Apache-2.0. There is no paid
+This package is open source under Apache-2.0 OR MIT. There is no paid
 support tier.
 
-- **Community support** (issues / discussions / PRs): best effort.
+- **Community support** (issues and PRs): best effort.
 - **Commercial support**: not available today. Contact
   `support@camt053.com` so the maintainer can gauge demand.
 
 ## The camt053 suite
 
-This package is one of four:
+This package is one of six, released together at one version:
 
-- [`camt053`](https://github.com/sebastienrousseau/camt053) — core
+- [`camt053`](https://github.com/sebastienrousseau/camt053): core
   library, CLI, REST API
-- [`camt053-mcp`](https://github.com/sebastienrousseau/camt053-mcp)
-  — MCP server (AI agents)
-- [`camt053-lsp`](https://github.com/sebastienrousseau/camt053-lsp)
-  — Language Server (editors)
-- [`camt053-writer-xlsx`](https://github.com/sebastienrousseau/camt053-writer-xlsx)
-  — **Excel writer (this package)**
+- [`camt053-loader-mt940`](https://github.com/sebastienrousseau/camt053-loader-mt940):
+  SWIFT MT940 loader
+- [`camt053-loader-mt942`](https://github.com/sebastienrousseau/camt053-loader-mt942):
+  SWIFT MT942 loader
+- [`camt053-writer-xlsx`](https://github.com/sebastienrousseau/camt053-writer-xlsx):
+  **Excel writer (this package)**
+- [`camt053-mcp`](https://github.com/sebastienrousseau/camt053-mcp): MCP
+  server (AI agents)
+- [`camt053-lsp`](https://github.com/sebastienrousseau/camt053-lsp):
+  Language Server (editors)
 
 Issues spanning multiple packages can be filed against `camt053`
 (the core); the maintainer will route them.
 
 ## Supported versions
 
-| Version | Supported? |
-| :--- | :--- |
-| 0.0.1 (latest) | ✅ |
+See the supported-versions table in [SECURITY.md](SECURITY.md#supported-versions).
+Requires Python 3.10+, `camt053 >= 0.0.23` and `openpyxl >= 3.1`.
 
-Requires Python 3.10+ and `camt053 >= 0.0.5`.
+## Contributing & maintaining
+
+Pull requests are welcome; start with [CONTRIBUTING.md](CONTRIBUTING.md).
+The project is looking for a second maintainer: if you review or contribute
+regularly and want release authority, say so in an issue.
