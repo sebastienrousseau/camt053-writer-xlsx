@@ -66,8 +66,9 @@
 pip install camt053-writer-xlsx
 ```
 
-> **Latest release: v0.0.23**: one `write_xlsx(document, path)` function,
-> released in lockstep with the camt053 suite, for Python 3.10+.
+> **Latest release: v0.0.24**: Python 3.11 or newer, released in
+> lockstep with the camt053 suite at 0.0.24. The workbook is unchanged
+> from 0.0.23.
 
 The package pulls in [`camt053`][core] (0.0.23 or newer, below 1) and
 [`openpyxl`][openpyxl] (3.1 or newer, below 4). There is no command-line
