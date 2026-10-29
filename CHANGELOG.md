@@ -28,6 +28,12 @@ Python 3.10 and requires the 0.0.24 core. The workbook is unchanged.
   The required `Test (Python 3.10)` check named in `SECURITY.md` becomes
   `Test (Python 3.11)`. On 3.10, pip keeps resolving 0.0.23.
 
+### Changed
+
+- Requires `camt053 >= 0.0.24, < 1` in `pyproject.toml` and
+  `requirements/runtime.in` (which `lint.in` and `test.in` include), and
+  the hash-pinned requirement files pin the published camt053 0.0.24.
+
 ## [0.0.23] - 2026-10-20
 
 The camt053 suite's 0.0.23 release, which brings every member back to one
