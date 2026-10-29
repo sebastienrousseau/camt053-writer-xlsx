@@ -83,7 +83,7 @@ single-maintainer project, so they are recorded here to keep their status
 explicit.
 
 - **Branch-Protection**: `main` requires the `Analyze (Python) (python)`,
-  `Lint & Type Check` and `Test (Python 3.10)` checks and linear history,
+  `Lint & Type Check` and `Test (Python 3.11)` checks and linear history,
   enforced for admins. Scorecard's higher tiers also want required approving
   reviews, which a single maintainer cannot give to their own pull requests
   (see [`MAINTAINERS.md`](MAINTAINERS.md)).

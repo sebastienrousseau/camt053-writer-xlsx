@@ -86,7 +86,7 @@ Issues spanning multiple packages can be filed against `camt053`
 ## Supported versions
 
 See the supported-versions table in [SECURITY.md](SECURITY.md#supported-versions).
-Requires Python 3.10+, `camt053 >= 0.0.23` and `openpyxl >= 3.1`.
+Requires Python 3.11+, `camt053 >= 0.0.23` and `openpyxl >= 3.1`.
 
 ## Contributing & maintaining
 
