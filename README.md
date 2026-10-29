@@ -17,7 +17,7 @@
   <a href="docs/index.md"><img src="https://img.shields.io/badge/docs-source-blue?style=for-the-badge&labelColor=555555&logo=readthedocs" alt="Docs" height="28" /></a>
   <a href="https://scorecard.dev/viewer/?uri=github.com/sebastienrousseau/camt053-writer-xlsx"><img src="https://img.shields.io/ossf-scorecard/github.com/sebastienrousseau/camt053-writer-xlsx?style=for-the-badge&label=OpenSSF%20Scorecard&logo=openssf" alt="OpenSSF Scorecard" height="28" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0%20OR%20MIT-blue.svg?style=for-the-badge" alt="License: Apache-2.0 OR MIT" height="28" /></a>
-  <a href="https://github.com/sebastienrousseau/camt053-writer-xlsx/blob/main/docs/POLICIES.md"><img src="https://img.shields.io/badge/Python-3.10%2B-93450a.svg?style=for-the-badge&logo=python" alt="Python 3.10 or newer" height="28" /></a>
+  <a href="https://github.com/sebastienrousseau/camt053-writer-xlsx/blob/main/docs/POLICIES.md"><img src="https://img.shields.io/badge/Python-3.11%2B-93450a.svg?style=for-the-badge&logo=python" alt="Python 3.11 or newer" height="28" /></a>
 </p>
 
 <p align="center">
@@ -66,10 +66,11 @@
 pip install camt053-writer-xlsx
 ```
 
-> **Latest release: v0.0.23**: one `write_xlsx(document, path)` function,
-> released in lockstep with the camt053 suite, for Python 3.10+.
+> **Latest release: v0.0.24**: Python 3.11 or newer, released in
+> lockstep with the camt053 suite at 0.0.24. The workbook is unchanged
+> from 0.0.23.
 
-The package pulls in [`camt053`][core] (0.0.23 or newer, below 1) and
+The package pulls in [`camt053`][core] (0.0.24 or newer, below 1) and
 [`openpyxl`][openpyxl] (3.1 or newer, below 4). There is no command-line
 entry point: it is a library.
 
@@ -77,9 +78,9 @@ entry point: it is a library.
 
 ## Requirements
 
-- Python 3.10 or newer, tested in CI on 3.10, 3.11, 3.12, 3.13 and 3.14 on
+- Python 3.11 or newer, tested in CI on 3.11, 3.12, 3.13 and 3.14 on
   Linux ([toolchain policy](docs/POLICIES.md)).
-- `camt053` 0.0.23 or newer on the 0.x line, and `openpyxl` 3.1 or newer on
+- `camt053` 0.0.24 or newer on the 0.x line, and `openpyxl` 3.1 or newer on
   the 3.x line.
 - Pure Python, so any platform CPython runs on; CI exercises Linux only.
 
