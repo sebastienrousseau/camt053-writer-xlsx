@@ -5,7 +5,7 @@
 # packages.
 # Regenerate with: make pip-compile
 -r runtime.in
-ruff==0.17.4
+ruff==0.17.6
 mypy>=1.11,<3
 reuse[charset-normalizer]>=6.3.0
 # The complexity gate is type-checked with its own tools installed.
